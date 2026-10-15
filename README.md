@@ -1,28 +1,26 @@
 # DemoExam2026 — авторизация обувного магазина
 
-WinForms-приложение на .NET 8 с локальной SQLite-базой. MySQL-сервер для работы приложения не нужен.
+WinForms-приложение на .NET 8 с EF Core и MySQL. SQLite не используется.
 
-## База данных
+## Подготовка базы
 
-При первом запуске приложение автоматически создаёт SQLite-файл:
+Целевая база — `db_u75_p18` на MySQL-сервере `5.129.243.76:3302`. Скрипт [database/setup.sql](database/setup.sql) создаёт таблицу `Users` и учебную учётную запись `user` / `user` с ролью `AuthorizedClient`.
 
-`%LOCALAPPDATA%/DemoExam2026/demoexam2026.db`
+Текущая учётная запись MySQL не имеет права `CREATE TABLE`; список её разрешений — `SELECT`, `INSERT`, `UPDATE`, `DELETE`. Поэтому владелец базы или администратор должен один раз выполнить `database/setup.sql`. После этого приложение сможет проверять логин и пароль.
 
-Там же создаются таблица `Users` и демонстрационная учётная запись:
+## Строка подключения
 
-- логин: `user`
-- пароль: `user`
-- роль: `AuthorizedClient`
+Приложение читает строку подключения из переменной окружения `DEMOEXAM2026_MYSQL_CONNECTION_STRING`. Установите её локально в Visual Studio или в терминале перед запуском. Не сохраняйте пароль в исходниках и не отправляйте его в Git.
 
-База и таблицы создаются в `Program.cs` через `EnsureCreated()`. Пользователь добавляется только если таблица пока пустая. Учётная запись предназначена для учебного запуска; пароль хранится в открытом виде согласно упрощённому примеру из задания.
+Формат строки: `Server=<host>;Port=<port>;Database=<database>;User=<user>;Password=<password>;`.
 
 ## Запуск в Windows
 
-Откройте `DemoExam2026.csproj` в Visual Studio 2022 с установленной поддержкой .NET 8 Desktop Development либо выполните в каталоге проекта:
+Откройте `DemoExam2026.csproj` в Visual Studio 2022 с установленной поддержкой .NET 8 Desktop Development либо выполните:
 
 ```powershell
 dotnet restore
 dotnet run
 ```
 
-Провайдер — `Microsoft.EntityFrameworkCore.Sqlite` версии 8.0.32.
+MySQL-провайдер EF Core — `Pomelo.EntityFrameworkCore.MySql` версии 8.0.3.
