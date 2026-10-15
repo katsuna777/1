@@ -5,17 +5,20 @@ namespace DemoExam2026.Data;
 
 public sealed class AppDbContext : DbContext
 {
-    private static string GetConnectionString() =>
-        Environment.GetEnvironmentVariable("DEMOEXAM2026_MYSQL_CONNECTION_STRING")
-        ?? throw new InvalidOperationException(
-            "Set the DEMOEXAM2026_MYSQL_CONNECTION_STRING environment variable.");
+    private static string GetDatabasePath()
+    {
+        var directory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "DemoExam2026");
+        Directory.CreateDirectory(directory);
+        return Path.Combine(directory, "demoexam2026.db");
+    }
 
     public DbSet<User> Users => Set<User>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = GetConnectionString();
-        optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        optionsBuilder.UseSqlite($"Data Source={GetDatabasePath()}");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

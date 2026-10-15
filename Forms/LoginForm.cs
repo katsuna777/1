@@ -96,7 +96,7 @@ public sealed class LoginForm : Form
         catch (Exception ex)
         {
             MessageBox.Show(
-                $"Не удалось подключиться к MySQL или получить доступ к таблице Users.\n\nПодробности: {ex.Message}",
+                $"Не удалось открыть локальную базу SQLite.\n\nПодробности: {ex.Message}",
                 "Ошибка базы данных",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
