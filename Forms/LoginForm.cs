@@ -96,8 +96,8 @@ public sealed class LoginForm : Form
         catch (Exception ex)
         {
             MessageBox.Show(
-                $"Не удалось подключиться к базе данных. Проверьте, что MySQL запущен и база DemoExam2026 доступна.\n\nПодробности: {ex.Message}",
-                "Ошибка подключения",
+                $"Не удалось открыть локальную базу данных SQLite.\n\nПодробности: {ex.Message}",
+                "Ошибка базы данных",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }
