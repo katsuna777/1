@@ -5,16 +5,19 @@ namespace DemoExam2026.Data;
 
 public sealed class AppDbContext : DbContext
 {
-    private const string ConnectionString =
-        "Server=localhost;Port=3306;Database=DemoExam2026;User=root;Password=;";
+    private const string DefaultConnectionString =
+        "Server=31.76.12.103;Port=3306;Database=DemoExam2026;User=root;Password=;";
 
     public DbSet<User> Users => Set<User>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        var connectionString = Environment.GetEnvironmentVariable("DEMOEXAM2026_MYSQL_CONNECTION_STRING")
+            ?? DefaultConnectionString;
+
         optionsBuilder.UseMySql(
-            ConnectionString,
-            ServerVersion.AutoDetect(ConnectionString));
+            connectionString,
+            ServerVersion.AutoDetect(connectionString));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
